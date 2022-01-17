@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import cors from "cors";
 
 import userRoutes from './routes/userRoutes.js';
+import { urlNotFound, errorHandler } from "./middleware/error.js";
 
 const app = express();
 dotenv.config();
@@ -17,6 +18,9 @@ app.use('/user', userRoutes);
 app.get('/', (req,res)=> {
     res.send('Hello from vchat')
 })
+
+app.use(urlNotFound);
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 
