@@ -142,3 +142,28 @@ export const addInGroup = async(req,res) => {
         res.status(400).json({message: 'Error, failed to add user in group'})
     }
 }
+
+export const removeFromGroup = async(req, res) => {
+    const {userId, groupId} = req.body;
+    try {
+        let removedUser = await Chat.findByIdAndUpdate(
+            groupId, 
+            {
+                $pull: {
+                    users: userId
+                }
+            },
+            {
+                new:true
+            }
+        ).populate("users", "-password").populate("groupAdmin", "-password");
+
+        if(!removedUser){
+            res.status(400).json({message: 'failed to remove user from group'})
+        }else {
+            res.status(200).json({removedUser})
+        }
+    } catch (error) {
+        res.status(400).json({message: 'Error, failed to remove user from group'})
+    }
+}
