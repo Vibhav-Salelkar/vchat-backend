@@ -1,5 +1,5 @@
 import express from "express";
-import { createChats, createGroup, editGroup, getChats } from "../controllers/chats.js";
+import { addInGroup, createChats, createGroup, editGroup, getChats } from "../controllers/chats.js";
 
 import auth from "../middleware/auth.js";
 
@@ -9,7 +9,7 @@ router.post('/', auth, createChats);
 router.get('/', auth, getChats);
 router.post('/group', auth, createGroup);
 router.put('/editgroup', auth, editGroup);
+router.put('/addingroup',auth,addInGroup);
 // router.put('removegroup',auth,removeFromGroup);
-// router.put('addgroup',auth,addInGroup);
 
 export default router;
