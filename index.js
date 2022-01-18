@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import cors from "cors";
 
 import userRoutes from './routes/userRoutes.js';
+import chatsRoutes from './routes/chatsRoutes.js';
 import { urlNotFound, errorHandler } from "./middleware/error.js";
 
 const app = express();
@@ -15,6 +16,7 @@ app.use(express.urlencoded({limit: '50mb', extended: true}));
 app.use(cors());
 
 app.use('/user', userRoutes);
+app.use('/chats', chatsRoutes);
 app.get('/', (req,res)=> {
     res.send('Hello from vchat')
 })
