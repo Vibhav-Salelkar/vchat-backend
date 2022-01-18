@@ -52,5 +52,25 @@ export const signup = async (req, res) => {
     } catch (error) {
         res.status(500).json({message: 'Something went wrong'});
     }
-    
+
+}
+
+export const allUsers = async(req, res) => {
+    const searchQuery = req.query.search ? {
+        $or: [
+            {
+                name: {
+                    $regex: req.query.search, $options: "i"
+                }
+            },
+            {
+                email: {
+                    $regex: req.query.search, $options: "i"
+                }
+            },
+        ]
+    }: {};
+    const user = await User.find(searchQuery).find({_id:{$ne:req.userId}});
+    res.status(200).json({user})
+    console.log(searchQuery);
 }
