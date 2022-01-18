@@ -1,5 +1,5 @@
 import express from "express";
-import { createChats, getChats } from "../controllers/chats.js";
+import { createChats, createGroup, getChats } from "../controllers/chats.js";
 
 import auth from "../middleware/auth.js";
 
@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.post('/', auth, createChats);
 router.get('/', auth, getChats);
-// router.post('/group', auth, createGroup);
+router.post('/group', auth, createGroup);
 // router.put('editgroup', auth, editGroup);
 // router.put('removegroup',auth,removeFromGroup);
 // router.put('addgroup',auth,addInGroup);

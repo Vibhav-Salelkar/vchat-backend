@@ -55,6 +55,37 @@ export const getChats = async (req, res) => {
         
         res.status(200).json({chats});
     } catch (error) {
-        res.status(404).json({message:'chats does not exist'});
+        res.status(400).json({message:'chats does not exist'});
+    }
+}
+
+export const createGroup = async(req, res) => {
+    let {name, users} =req.body;
+
+    if(!name || !users) {
+        return res.status(400).json({meesage: "Please provide required data"});
+    }
+    users = JSON.parse(users);
+
+    if(users.length <2){
+        res.status(400).json({message:'Requires more than 2 users'});
+    }
+
+    let currentUser = await User.findOne({_id: req.userId});
+    users.push(currentUser);
+
+    try {
+        const groupChat = await Chat.create({
+            chatName: req.body.name,
+            isGroup: true,
+            groupAdmin: currentUser,
+            users:users
+        })
+
+        let foundGroupChat = await Chat.findOne({_id: groupChat._id}).populate("users","-password").populate("groupAdmin", "-password"); 
+
+        res.status(200).json({foundGroupChat});
+    } catch (error) {
+        res.status(400).json({message:'error occured'});
     }
 }
