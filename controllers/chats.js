@@ -41,3 +41,20 @@ export const createChats = async (req, res) => {
         res.status(400).json({message: error.message})
     }
 }
+
+export const getChats = async (req, res) => {
+    try {
+        let chats = await Chat.find({
+            users: {$elemMatch: {$eq: req.userId}}
+        }).populate("users", "-password").populate("groupAdmin", "-password").populate("recentChat").sort({updatedAt: -1});
+
+        chats = await User.populate(chats, {
+            path: 'recentChat.sender',
+            select: "name, avatar, email"
+        });
+        
+        res.status(200).json({chats});
+    } catch (error) {
+        res.status(404).json({message:'chats does not exist'});
+    }
+}
