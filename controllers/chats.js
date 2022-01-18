@@ -89,3 +89,31 @@ export const createGroup = async(req, res) => {
         res.status(400).json({message:'error occured'});
     }
 }
+
+export const editGroup = async (req, res) => {
+    const {name, groupId} = req.body;
+
+    if(!name) {
+        res.status(400).json({message: 'Please provide required data'})
+    }
+
+    try {
+        let existingGroup = await Chat.findByIdAndUpdate(
+            groupId,
+            {
+                chatName: name
+            },
+            {
+                new:true
+            }
+        ).populate("users", "-password").populate("groupAdmin", "-password");
+        
+        if(!existingGroup){
+            res.status(400).json({message: 'failed to update group'})
+        }else {
+            res.status(400).json({existingGroup})
+        }
+    } catch (error) {
+        res.status(400).json({message: 'failed to update group'})
+    }
+}
