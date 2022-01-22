@@ -5,6 +5,7 @@ import cors from "cors";
 
 import userRoutes from './routes/userRoutes.js';
 import chatsRoutes from './routes/chatsRoutes.js';
+import messageRoutes from './routes/messageRoutes.js';
 import { urlNotFound, errorHandler } from "./middleware/error.js";
 
 const app = express();
@@ -17,6 +18,7 @@ app.use(cors());
 
 app.use('/user', userRoutes);
 app.use('/chats', chatsRoutes);
+app.use('/message', messageRoutes);
 app.get('/', (req,res)=> {
     res.send('Hello from vchat')
 })
