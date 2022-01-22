@@ -108,10 +108,11 @@ export const editGroup = async (req, res) => {
             }
         ).populate("users", "-password").populate("groupAdmin", "-password");
         
+        console.log(existingGroup);
         if(!existingGroup){
             res.status(400).json({message: 'failed to update group'})
         }else {
-            res.status(400).json({existingGroup})
+            res.status(200).json({existingGroup})
         }
     } catch (error) {
         res.status(400).json({message: 'failed to update group'})
