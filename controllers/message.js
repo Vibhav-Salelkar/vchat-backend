@@ -29,7 +29,7 @@ export const sendMessage = async (req, res) => {
             recentChat: newMessage
         })
 
-        res.status(200).json({newMessage});
+        res.status(200).json(newMessage);
 
     } catch (error) {
         return res.status(400).json({message: 'Could not send message'})
@@ -37,5 +37,12 @@ export const sendMessage = async (req, res) => {
 }
 
 export const allMessages = async (req, res) => {
-    
+    try {
+        const messages = await Message.find({chat: req.params.chatId}).populate("sender", "name avatar email").populate("chat");
+
+        res.status(200).json(messages);
+        
+    } catch (error) {
+        return res.status(400).json({message: 'Could not fetch messages'})
+    }
 }
